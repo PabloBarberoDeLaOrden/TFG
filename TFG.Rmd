@@ -1,0 +1,1325 @@
+---
+title: "TFG"
+author: "Pablo Barbero De La Orden"
+date: "15/3/2022"
+output: html_document
+---
+
+# Carga de datos
+```{r message=FALSE}
+library(readr)
+datos_origin <- read_delim("C:/Users/MEMORY SISTEMAS/Desktop/4 carrera/TFG/Encuesta hábitos del deporte/habitos_deporte_clean3.csv", 
+    delim = ";", escape_double = FALSE, trim_ws = TRUE)
+datos  = datos_origin
+```
+
+# NA son 0
+```{r echo=FALSE}
+library(spatstat)
+datos[is.na(datos)] <- 0
+datos2 = datos
+
+variables = names(datos)
+
+```
+
+## recodificación
+```{r echo=FALSE}
+
+datos$P1[datos2$P1==9]<-NA
+datos$P1[datos2$P1==4]<-0
+datos$P1[datos2$P1==1]<-2
+datos$P1[datos2$P1==3]<-1
+datos$P1[datos2$P1==2]<-1
+
+datos$P2[datos2$P2==3]<-0
+datos$P2[datos2$P2==2]<-2
+datos$P2[datos2$P2==1]<-1
+datos$P2[datos2$P2==9]<-NA
+
+datos$P301[datos2$P301==98]<-NA
+datos$P301[datos2$P301==99]<-NA
+datos$P301[datos2$P301==1]<-0
+datos$P301[datos2$P301==2]<-2
+datos$P301[datos2$P301==3]<-0
+datos$P301[datos2$P301==4]<-2
+datos$P301[datos2$P301==5]<-0
+datos$P301[datos2$P301==6]<-1
+datos$P301[datos2$P301==7]<-1
+datos$P301[datos2$P301==8]<-1
+datos$P301[datos2$P301==9]<-2
+datos$P301[datos2$P301==10]<-0
+datos$P301[datos2$P301==11]<-NA
+
+datos$P4[datos2$P4==9]<-0
+datos$P4[datos2$P4==6]<-0
+datos$P4[datos2$P4==5]<-0
+datos$P4[datos2$P4==4]<-0
+datos$P4[datos2$P4==3]<-1
+datos$P4[datos2$P4==2]<-1
+datos$P4[datos2$P4==1]<-2
+
+datos$P5[datos2$P5==99]<-NA
+datos$P5[datos2$P5==98]<-NA
+datos$P5[datos2$P5==8]<-0
+datos$P5[datos2$P5==7]<-1
+datos$P5[datos2$P5==6]<-1
+datos$P5[datos2$P5==5]<-1
+datos$P5[datos2$P5==4]<-1
+datos$P5[datos2$P5==3]<-2
+datos$P5[datos2$P5==2]<-2
+datos$P5[datos2$P5==1]<-2
+
+datos$P6[datos2$P6==9]<-NA
+datos$P6[datos2$P6==0]<-2
+datos$P6[datos2$P6==5]<-1
+datos$P6[datos2$P6==4]<-1
+datos$P6[datos2$P6==3]<-1
+datos$P6[datos2$P6==2]<-0
+datos$P6[datos2$P6==1]<-0
+
+datos$P7[datos2$P7==0]<-2
+datos$P7[datos2$P7==1]<-2
+datos$P7[datos2$P7==2]<-2
+datos$P7[datos2$P7==3]<-1
+datos$P7[datos2$P7==4]<-0
+datos$P7[datos2$P7==0]<-2
+
+datos$P801[datos2$P801==99]<-NA
+datos$P801[datos2$P801==0]<-2
+datos$P801[datos2$P801==1]<-1
+datos$P801[datos2$P801==2]<-1
+datos$P801[datos2$P801==3]<-2
+datos$P801[datos2$P801==4]<-2
+datos$P801[datos2$P801==5]<-0
+datos$P801[datos2$P801==6]<-1
+datos$P801[datos2$P801==7]<-0
+datos$P801[datos2$P801==8]<-0
+datos$P801[datos2$P801==9]<-0
+datos$P801[datos2$P801==10]<-1
+datos$P801[datos2$P801==13]<-0
+datos$P801[datos2$P801==11]<-NA
+
+datos$P901[datos2$P901==99]<-NA
+datos$P901[datos2$P901==1]<-1
+datos$P901[datos2$P901==2]<-1
+datos$P901[datos2$P901==3]<-2
+datos$P901[datos2$P901==4]<-2
+datos$P901[datos2$P901==5]<-0
+datos$P901[datos2$P901==6]<-1
+datos$P901[datos2$P901==7]<-0
+datos$P901[datos2$P901==8]<-0
+datos$P901[datos2$P901==9]<-0
+datos$P901[datos2$P901==10]<-1
+datos$P901[datos2$P901==11]<-0
+datos$P901[datos2$P901==12]<-NA
+
+datos$P1001[datos2$P1001==99]<-NA
+datos$P1001[datos2$P1001==1]<-0
+datos$P1001[datos2$P1001==2]<-0
+datos$P1001[datos2$P1001==3]<-1
+datos$P1001[datos2$P1001==4]<-0
+datos$P1001[datos2$P1001==5]<-1
+datos$P1001[datos2$P1001==6]<-0
+datos$P1001[datos2$P1001==7]<-1
+datos$P1001[datos2$P1001==8]<-2
+datos$P1001[datos2$P1001==9]<-NA
+
+datos$P12[datos2$P12==2]<-1
+datos$P12[datos2$P12==9]<-NA
+
+datos$P13[datos2$P13==9]<-NA
+datos$P13[datos2$P13==1]<-2
+datos$P13[datos2$P13==2]<-1
+datos$P13[datos2$P13==3]<-0
+
+datos$P14[datos2$P14==9]<-NA
+datos$P14[datos2$P14==1]<-1
+datos$P14[datos2$P14==2]<-1
+datos$P14[datos2$P14==3]<-0
+datos$P14[datos2$P14==4]<-0
+datos$P14[datos2$P14==5]<-NA
+
+datos$P15[datos2$P15==9]<-NA
+datos$P15[datos2$P15==1]<-0
+datos$P15[datos2$P15==2]<-1
+datos$P15[datos2$P15==3]<-1
+datos$P15[datos2$P15==4]<-NA
+
+datos$P16[datos2$P16==9]<-NA
+datos$P16[datos2$P16==1]<-0
+datos$P16[datos2$P16==2]<-1
+datos$P16[datos2$P16==3]<-1
+datos$P16[datos2$P16==4]<-1
+datos$P16[datos2$P16==5]<-1
+datos$P16[datos2$P16==6]<-1
+
+datos$P18[datos2$P18==9]<-NA
+datos$P18[datos2$P18==2]<-0
+datos$P18[datos2$P18==3]<-1
+
+datos$P19[datos2$P19==2]<-0
+datos$P19[datos2$P19==9]<-NA
+
+datos$P20[datos2$P20==9]<-NA
+datos$P20[datos2$P20==4]<-0
+datos$P20[datos2$P20==3]<-1
+datos$P20[datos2$P20==2]<-1
+datos$P20[datos2$P20==1]<-1
+
+datos$P21[datos2$P21==9]<-NA
+datos$P21[datos2$P21==3]<-0
+datos$P21[datos2$P21==2]<-1
+
+datos$P22[datos2$P22==9]<-NA
+datos$P22[datos2$P22==2]<-0
+datos$P22[datos2$P22==1]<-1
+
+datos$P23[datos2$P23==2]<-1
+datos$P23[datos2$P23==3]<-1
+datos$P23[datos2$P23==4]<-0
+datos$P23[datos2$P23==5]<-0
+datos$P23[datos2$P23==9]<-NA
+
+datos$P24[datos2$P24==9]<-NA
+datos$P24[datos2$P24==8]<-NA
+datos$P24[datos2$P24==4]<-0
+datos$P24[datos2$P24==3]<-0
+datos$P24[datos2$P24==2]<-0
+datos$P24[datos2$P24==1]<-1
+
+datos$P3001[datos2$P3001==1]<-1
+datos$P3001[datos2$P3001==2]<-1
+datos$P3001[datos2$P3001==3]<-0
+datos$P3001[datos2$P3001==4]<-0
+datos$P3001[datos2$P3001==8]<-NA
+datos$P3001[datos2$P3001==9]<-NA
+
+datos$P3002[datos2$P3002==1]<-1
+datos$P3002[datos2$P3002==2]<-1
+datos$P3002[datos2$P3002==3]<-0
+datos$P3002[datos2$P3002==4]<-0
+datos$P3002[datos2$P3002==8]<-NA
+datos$P3002[datos2$P3002==9]<-NA
+
+datos$P3003[datos2$P3003==1]<-1
+datos$P3003[datos2$P3003==2]<-1
+datos$P3003[datos2$P3003==3]<-0
+datos$P3003[datos2$P3003==4]<-0
+datos$P3003[datos2$P3003==8]<-NA
+datos$P3003[datos2$P3003==9]<-NA
+
+datos$P3004[datos2$P3004==1]<-1
+datos$P3004[datos2$P3004==2]<-1
+datos$P3004[datos2$P3004==3]<-0
+datos$P3004[datos2$P3004==4]<-0
+datos$P3004[datos2$P3004==8]<-NA
+datos$P3004[datos2$P3004==9]<-NA
+
+datos$P3005[datos2$P3005==1]<-1
+datos$P3005[datos2$P3005==2]<-1
+datos$P3005[datos2$P3005==3]<-0
+datos$P3005[datos2$P3005==4]<-0
+datos$P3005[datos2$P3005==8]<-NA
+datos$P3005[datos2$P3005==9]<-NA
+
+datos$P3006[datos2$P3006==1]<-1
+datos$P3006[datos2$P3006==2]<-1
+datos$P3006[datos2$P3006==3]<-0
+datos$P3006[datos2$P3006==4]<-0
+datos$P3006[datos2$P3006==8]<-NA
+datos$P3006[datos2$P3006==9]<-NA
+
+datos$P41[datos2$P41==1]<-1
+datos$P41[datos2$P41==2]<-1
+datos$P41[datos2$P41==3]<-1
+datos$P41[datos2$P41==4]<-0
+datos$P41[datos2$P41==9]<-NA
+
+datos$P42[datos2$P42==2]<-0
+datos$P42[datos2$P42==9]<-NA
+
+datos$P4401[datos2$P4401==2]<-1
+datos$P4401[datos2$P4401==3]<-0
+datos$P4401[datos2$P4401==4]<-0
+datos$P4401[datos2$P4401==9]<-NA
+
+datos$P4402[datos2$P4402==2]<-1
+datos$P4402[datos2$P4402==3]<-0
+datos$P4402[datos2$P4402==4]<-0
+datos$P4402[datos2$P4402==9]<-NA
+
+datos$P4403[datos2$P4403==2]<-1
+datos$P4403[datos2$P4403==3]<-0
+datos$P4403[datos2$P4403==4]<-0
+datos$P4403[datos2$P4403==9]<-NA
+
+datos$P45[datos2$P45==1]<-1
+datos$P45[datos2$P45==2]<-0
+datos$P45[datos2$P45==8]<-NA
+datos$P45[datos2$P45==9]<-NA
+
+datos$P47[datos2$P47==1]<-1
+datos$P47[datos2$P47==2]<-1
+datos$P47[datos2$P47==3]<-1
+datos$P47[datos2$P47==4]<-0
+datos$P47[datos2$P47==5]<-0
+datos$P47[datos2$P47==6]<-0
+datos$P47[datos2$P47==8]<-NA
+datos$P47[datos2$P47==9]<-NA
+
+datos$P48[datos2$P48==1]<-1
+datos$P48[datos2$P48==2]<-1
+datos$P48[datos2$P48==3]<-0
+datos$P48[datos2$P48==4]<-0
+datos$P48[datos2$P48==9]<-NA
+
+datos$P6101[datos2$P6101==95]<-NA
+datos$P6101[datos2$P6101==97]<-NA
+datos$P6101[datos2$P6101==99]<-NA
+datos$P6101[datos2$P6101<=3]<-0
+datos$P6101[datos2$P6101>3]<-1
+
+datos$P6102[datos2$P6102>=0]<-NA
+
+datos$P6103[datos2$P6103==95]<-NA
+datos$P6103[datos2$P6103==97]<-NA
+datos$P6103[datos2$P6103==99]<-NA
+datos$P6103[datos2$P6103>5 & datos2$P6103<24]<-1
+datos$P6103[datos2$P6103<=5] <- 0
+datos$P6103[datos2$P6103>=24] <- NA
+
+datos$P6201[datos2$P6201==1]<-0
+datos$P6201[datos2$P6201>2]<-NA
+datos$P6202[datos2$P6202==1]<-1
+datos$P6202[datos2$P6202>2]<-NA
+datos$P6203[datos2$P6203==1]<-3
+datos$P6204[datos2$P6204==1]<-0
+datos$P6205[datos2$P6205==1]<-0
+datos$P6206[datos2$P6206==1]<-2
+datos$P6207[datos2$P6207==1]<-1
+datos$P6208[datos2$P6208==1]<-0
+datos$P6209[datos2$P6209==1]<-0
+datos$P6210[datos2$P6210==1]<-0
+datos$P6211[datos2$P6211==1]<-2
+datos$P6212[datos2$P6212==1]<-0
+datos$P6213[datos2$P6213==1]<-0
+datos$P6214[datos2$P6214==1]<-0
+datos$P6215[datos2$P6215==1]<-0
+datos$P6216[datos2$P6216==1]<-0
+
+datos$P6301[datos2$P6301==2]<-0
+datos$P6302[datos2$P6302==2]<-0
+datos$P6303[datos2$P6303==2]<-0
+datos$P6304[datos2$P6304==2]<-0
+datos$P6305[datos2$P6305==2]<-0
+datos$P6306[datos2$P6306==2]<-0
+datos$P6307[datos2$P6307==2]<-0
+datos$P6308[datos2$P6308==2]<-0
+datos$P6309[datos2$P6309==2]<-0
+datos$P6310[datos2$P6310==2]<-0
+datos$P6311[datos2$P6311==2]<-0
+datos$P6312[datos2$P6312==2]<-0
+datos$P6313[datos2$P6313==2]<-0
+datos$P6314[datos2$P6314==2]<-0
+datos$P6315[datos2$P6315==2]<-0
+datos$P6316[datos2$P6316==2]<-0
+datos$P6317[datos2$P6317==2]<-0
+datos$P6318[datos2$P6318==2]<-0
+datos$P6319[datos2$P6319==2]<-0
+
+datos$P6301[datos2$P6301==9]<-NA
+datos$P6302[datos2$P6302==9]<-NA
+datos$P6303[datos2$P6303==9]<-NA
+datos$P6304[datos2$P6304==9]<-NA
+datos$P6305[datos2$P6305==9]<-NA
+datos$P6306[datos2$P6306==9]<-NA
+datos$P6307[datos2$P6307==9]<-NA
+datos$P6308[datos2$P6308==9]<-NA
+datos$P6309[datos2$P6309==9]<-NA
+datos$P6310[datos2$P6310==9]<-NA
+datos$P6311[datos2$P6311==9]<-NA
+datos$P6312[datos2$P6312==9]<-NA
+datos$P6313[datos2$P6313==9]<-NA
+datos$P6314[datos2$P6314==9]<-NA
+datos$P6315[datos2$P6315==9]<-NA
+datos$P6316[datos2$P6316==9]<-NA
+datos$P6317[datos2$P6317==9]<-NA
+datos$P6318[datos2$P6318==9]<-NA
+datos$P6319[datos2$P6319==9]<-NA
+
+datos$P65[datos2$P65==1]<-"H"
+datos$P65[datos2$P65==2]<-"M"
+
+datos$ESTUDIOS[datos2$ESTUDIOS==1]<-"Ninguno"
+datos$ESTUDIOS[datos2$ESTUDIOS==2]<-"Primaria"
+datos$ESTUDIOS[datos2$ESTUDIOS==3]<-"Secundaria"
+datos$ESTUDIOS[datos2$ESTUDIOS==4]<-"F.P"
+datos$ESTUDIOS[datos2$ESTUDIOS==5]<-"Universitarios"
+datos$ESTUDIOS[datos2$ESTUDIOS==6]<-"Superiores"
+datos$ESTUDIOS[datos2$ESTUDIOS==9]<-"N.C"
+
+datos$PROV[datos2$PROV==1]<-"Álava"
+datos$PROV[datos2$PROV==2]<-"Albacete"
+datos$PROV[datos2$PROV==3]<-"Alicante"
+datos$PROV[datos2$PROV==4]<-"Almería"
+datos$PROV[datos2$PROV==33]<-"Asturias"
+datos$PROV[datos2$PROV==5]<-"Ávila"
+datos$PROV[datos2$PROV==6]<-"Badajoz"
+datos$PROV[datos2$PROV==7]<-"Baleares"
+datos$PROV[datos2$PROV==8]<-"Barcelona"
+datos$PROV[datos2$PROV==9]<-"Burgos"
+datos$PROV[datos2$PROV==10]<-"Cáceres"
+datos$PROV[datos2$PROV==11]<-"Cádiz"
+datos$PROV[datos2$PROV==39]<-"Cantabria"
+datos$PROV[datos2$PROV==12]<-"Castellón"
+datos$PROV[datos2$PROV==13]<-"Ciudad Real"
+datos$PROV[datos2$PROV==14]<-"Córdoba"
+datos$PROV[datos2$PROV==15]<-"A Coruña"
+datos$PROV[datos2$PROV==16]<-"Cuenca"
+datos$PROV[datos2$PROV==17]<-"Girona"
+datos$PROV[datos2$PROV==18]<-"Granada"
+datos$PROV[datos2$PROV==19]<-"Guadalajara"
+datos$PROV[datos2$PROV==20]<-"Guipúzcoa"
+datos$PROV[datos2$PROV==21]<-"Huelva"
+datos$PROV[datos2$PROV==22]<-"Huesca"
+datos$PROV[datos2$PROV==23]<-"Jaén"
+datos$PROV[datos2$PROV==24]<-"León"
+datos$PROV[datos2$PROV==25]<-"Lleida"
+datos$PROV[datos2$PROV==27]<-"Lugo"
+datos$PROV[datos2$PROV==28]<-"Madrid"
+datos$PROV[datos2$PROV==29]<-"Málaga"
+datos$PROV[datos2$PROV==30]<-"Murcia"
+datos$PROV[datos2$PROV==31]<-"Navarra"
+datos$PROV[datos2$PROV==32]<-"Ourense"
+datos$PROV[datos2$PROV==34]<-"Palencia"
+datos$PROV[datos2$PROV==35]<-"Las Palmas"
+datos$PROV[datos2$PROV==36]<-"Pontevedra"
+datos$PROV[datos2$PROV==26]<-"La Rioja"
+datos$PROV[datos2$PROV==37]<-"Salamanca"
+datos$PROV[datos2$PROV==38]<-"Santa Cruz de Tenerife"
+datos$PROV[datos2$PROV==40]<-"Segovia"
+datos$PROV[datos2$PROV==41]<-"Sevilla"
+datos$PROV[datos2$PROV==42]<-"Soria"
+datos$PROV[datos2$PROV==43]<-"Tarragona"
+datos$PROV[datos2$PROV==44]<-"Teruel"
+datos$PROV[datos2$PROV==45]<-"Toledo"
+datos$PROV[datos2$PROV==46]<-"Valencia"
+datos$PROV[datos2$PROV==47]<-"Valladolid"
+datos$PROV[datos2$PROV==48]<-"Vizcaya"
+datos$PROV[datos2$PROV==49]<-"Zamora"
+datos$PROV[datos2$PROV==50]<-"Zaragoza"
+datos$PROV[datos2$PROV==51]<-"Ceuta"
+datos$PROV[datos2$PROV==52]<-"Melilla"
+
+
+WW = lapply(datos[144], function(x) cut(x, 
+    breaks = c(14,25,50,65,+Inf), 
+    labels = c("15-25", "26-50", "50-65","+65")))
+
+```
+```{r}
+numeros = c(1:ncol(datos))
+diccionario = cbind(numeros, variables)
+```
+
+
+## Indicadores temáticos
+```{r}
+datos_codif = datos
+
+single = rowSums( datos[,11:20], na.rm = TRUE )
+
+df = cbind(cues = datos$CUES, A1 = datos$A1)
+ 
+df = cbind(df, Vinc_dep = single)
+
+single = rowSums( datos[,21:83], na.rm = TRUE )
+
+df = cbind(df, Pract_dep = single)
+
+single = rowSums( datos[,84:94], na.rm = TRUE )
+
+df = cbind(df, Salud_perc_ffis = single)
+
+single = rowSums( datos[,95:102], na.rm = TRUE )
+
+df = cbind(df, cont_dep_entrete = single)
+
+single = rowSums( datos[,103:121], na.rm = TRUE )
+
+df = cbind(df, Tiempo_libre = single)
+
+single = rowSums( datos[,122:141], na.rm = TRUE )
+
+df = cbind(df, Equip_deportivo = single)
+
+df = as.data.frame(df)
+
+quantile(df$Vinc_dep, na.rm = T, probs = seq(0, 1, 0.33))
+quantile(df$Pract_dep, na.rm = T, probs = seq(0, 1, 0.33))
+quantile(df$Salud_perc_ffis, na.rm = T, probs = seq(0, 1, 0.33))
+quantile(df$cont_dep_entrete, na.rm = T, probs = seq(0, 1, 0.33))
+quantile(df$Tiempo_libre, na.rm = T, probs = seq(0, 1, 0.33))
+quantile(df$Equip_deportivo, na.rm = T, probs = seq(0, 1, 0.33))
+
+df2 = cbind(df, PROV = datos$PROV, PESO = datos$PESO, GENERO = datos$P65, EDAD = WW$P66, CONDICION = datos$CONDICION, OCUPA = datos$OCUPA, ESTUDIOS = datos$ESTUDIOS, ESTATUS = datos$ESTATUS)
+
+
+quantile(df$Vinc_dep, na.rm = T, probs = seq(0, 1, 0.5))
+quantile(df$Pract_dep, na.rm = T, probs = seq(0, 1, 0.5))
+quantile(df$Salud_perc_ffis, na.rm = T, probs = seq(0, 1, 0.5))
+quantile(df$cont_dep_entrete, na.rm = T, probs = seq(0, 1, 0.5))
+quantile(df$Tiempo_libre, na.rm = T, probs = seq(0, 1, 0.5))
+quantile(df$Equip_deportivo, na.rm = T, probs = seq(0, 1, 0.5))
+
+
+```
+
+# Indicadores temáticos
+
+```{r}
+library(survey)
+library(ggplot2)
+library(gridExtra)
+library(RColorBrewer)
+library(dplyr)
+library(sp)
+df2$ESTUDIOS=as.factor(df2$ESTUDIOS)
+df2$ESTATUS=as.factor(df2$ESTATUS)
+df2$GENERO=as.factor(df2$GENERO)
+df2$EDAD=as.factor(df2$EDAD)
+df2$PROV=as.factor(df2$PROV)
+
+df3 <- svydesign(id=~A1,strata=NULL,data=df2 ,weights = df2$PESO)
+
+```
+
+## Vínculo con el deporte
+
+```{r}
+Vinc_dep_mean =svymean(~Vinc_dep, df3, na.rm = TRUE)
+Vinc_dep_median =svyquantile(~Vinc_dep, df3, na = TRUE, c(.5))
+print(Vinc_dep_mean)
+print(Vinc_dep_median)
+
+plot1 <- ggplot(df2, aes(Vinc_dep, weight = PESO)) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), fill = "purple4") + 
+          scale_y_continuous(labels=scales::percent) +
+          geom_text(aes( label = scales::percent(..prop.., accuracy = 0.1),
+                   y= ..prop.. ), stat= "count", vjust = -.5) +
+       ylab("relative frequencies")+
+       xlab("(a) Proporción Vínculo con el deporte")
+
+plot2 <- ggplot(df2, aes(x = Vinc_dep, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "b) Vínculo con el deporte")
+
+plot5 <- ggplot(df2, aes(x = Vinc_dep, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "c) Vínculo con el deporte por género") + scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(df2, aes(x = Vinc_dep, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "d) Vínculo con el deporte por nivel de estudios")  + scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(df2, aes(x = Vinc_dep, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "e) Vínculo con el deporte por edad")+ scale_fill_brewer(palette="BuPu")
+
+plot1
+
+grid.arrange(plot2, plot5, plot3, plot4, nrow=2)
+
+```
+
+```{r}
+library(plyr)
+prov_vin_dep_mean = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$Vinc_dep, x$PESO)))
+```
+
+```{r}
+setwd("C:/Users/MEMORY SISTEMAS/Desktop/4 carrera/Big Data")
+mapa_esp = readRDS(file = "C:/Users/MEMORY SISTEMAS/Desktop/3 carrera/Analisis de muestras/Trabajo Andalucia oriental/gadm36_ESP_2_sp.rds")
+
+
+index_prov = mapa_esp$NAME_2
+CM = mapa_esp
+CM@data
+
+# crear el mapa de España por Provincias
+  # los datos (*.RData) del mapa se han obtenido de Global Administrative Areas  http://www.gadm.org/country
+  nfile5<-"ESP_adm2_b.RData"
+  load(nfile5)
+  esp2<-ESP_adm2_b
+
+#esp2<-CM
+  esp2$NAME_2 <- as.factor((as.character(esp2$NAME_2)))
+  esp2$Region <- tolower(esp2$NAME_2)
+  ##### Para recuadrar las Canarias
+  cuadro<-Lines(list(Line(matrix(c(-0.7,36.01069, -0.7,37.85,  4.289268,37.85), byrow=TRUE, ncol=2))),ID="a")
+  cuadro<-SpatialLines(list(cuadro))
+  # Crear la lista del recuadro de CANARIAS
+  recuadro<-list("sp.lines", cuadro, lwd=.5, lty=2 )
+  #Leer las coordenadas de las provincias
+  coordenadas2 <- coordinates(esp2)
+
+#Hay que hacer el match por provincia
+prov_vin_dep_mean_2 <- prov_vin_dep_mean[match(index_prov, prov_vin_dep_mean$PROV ), ]       
+esp2$Vinc_dep=prov_vin_dep_mean_2$wret
+
+#textos = prov_vin_dep_mean_2$PROV
+textos = rep("",length(prov_vin_dep_mean_2$PROV))
+coordenadas = coordinates(CM)
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Vinc_dep_mean = spplot(esp2, "Vinc_dep", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a) Vínculo deporte media", cex = 1.5))
+
+
+prov_vin_dep_median = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$Vinc_dep, x$PESO)))
+
+prov_vin_dep_median_2 <- prov_vin_dep_median[match(index_prov, prov_vin_dep_median$PROV ), ]       
+esp2$Vinc_dep_med=prov_vin_dep_median_2$wret
+
+#textos = prov_vin_dep_median_2$PROV
+textos = rep("",length(prov_vin_dep_median_2$PROV))
+coordenadas = coordinates(CM)
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Vinc_dep_median = spplot(esp2, "Vinc_dep_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b) Vínculo deporte mediana", cex = 1.5))
+
+grid.arrange(Vinc_dep_mean,Vinc_dep_median, nrow=1)
+```
+
+## Prácticas deportivas
+
+```{r}
+Pract_dep_mean =svymean(~Pract_dep, df3, na.rm = TRUE)
+Pract_dep_median =svyquantile(~Pract_dep, df3, na = TRUE, c(.5))
+print(Pract_dep_mean)
+print(Pract_dep_median)
+
+plot1 <- ggplot(df2, aes(Pract_dep, weight = PESO)) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), fill = "purple4") + 
+          scale_y_continuous(labels=scales::percent) +
+          geom_text(aes( label = scales::percent(..prop.., accuracy = 0.1),
+                   y= ..prop.. ), stat= "count", vjust = -.5) +
+       ylab("relative frequencies")+
+       xlab("(a) Proporción Prácticas deportivas")
+
+plot2 <- ggplot(df2, aes(x = Pract_dep, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "(b) Prácticas deportivas")
+
+plot5 <- ggplot(df2, aes(x = Pract_dep, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "(c) Prácticas deportivas según género") + scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(df2, aes(x = Pract_dep, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "(d) Prácticas deportivas según nivel de estudios")+ scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(df2, aes(x = Pract_dep, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "(e) Prácticas deportivas según edad")+ scale_fill_brewer(palette="BuPu")
+
+plot1
+grid.arrange(plot2, plot5, plot3, plot4, nrow=2)
+```
+
+```{r}
+prov_Pract_dep_mean = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$Pract_dep, x$PESO)))
+
+
+#Hay que hacer el match por provincia
+prov_Pract_dep_mean_2 <- prov_Pract_dep_mean[match(index_prov, prov_Pract_dep_mean$PROV ), ]       
+esp2$Pract_dep=prov_Pract_dep_mean_2$wret
+
+#textos = prov_Pract_dep_mean_2$PROV
+textos = rep("",length(prov_Pract_dep_mean_2$PROV))
+coordenadas = coordinates(CM)
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Pract_dep_mean = spplot(esp2, "Pract_dep", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a) Prácticas dep media", cex = 1.5))
+
+prov_Pract_dep_median = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$Pract_dep, x$PESO)))
+
+
+#Hay que hacer el match por provincia
+prov_Pract_dep_median_2 <- prov_Pract_dep_median[match(index_prov, prov_Pract_dep_median$PROV ), ]       
+esp2$Pract_dep_med=prov_Pract_dep_median_2$wret
+
+#textos = prov_Pract_dep_median_2$PROV
+textos = rep("",length(prov_Pract_dep_median_2$PROV))
+coordenadas = coordinates(CM)
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Pract_dep_med = spplot(esp2, "Pract_dep_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b) Prácticas dep mediana", cex = 1.5))
+
+grid.arrange(Pract_dep_mean,Pract_dep_med, nrow=1)
+```
+
+## Salud y percepción de la forma física
+
+```{r}
+Salud_perc_ffis_mean =svymean(~Salud_perc_ffis, df3, na.rm = TRUE)
+Salud_perc_ffis_median =svyquantile(~Salud_perc_ffis, df3, na = TRUE, c(.5))
+print(Salud_perc_ffis_mean)
+print(Salud_perc_ffis_median)
+
+plot1 <- ggplot(df2, aes(Salud_perc_ffis, weight = PESO)) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), fill = "purple4") + 
+          scale_y_continuous(labels=scales::percent) +
+          geom_text(aes( label = scales::percent(..prop.., accuracy = 0.1),
+                   y= ..prop.. ), stat= "count", vjust = -.5) +
+       ylab("relative frequencies")+
+       xlab("Proporción Salud y percepción de la forma física")
+
+plot2 <- ggplot(df2, aes(x = Salud_perc_ffis, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "Salud y percepción de la forma física")
+
+plot5 <- ggplot(df2, aes(x = Salud_perc_ffis, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "Salud y percepción de la forma física según género")+ scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(df2, aes(x = Salud_perc_ffis, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "Percepción forma física según nivel de estudios")+ scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(df2, aes(x = Salud_perc_ffis, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "Salud y percepción de la forma física según EDAD")+ scale_fill_brewer(palette="BuPu")
+
+plot1
+grid.arrange(plot2,plot5,plot3, plot4, nrow=2)
+```
+
+```{r}
+prov_Salud_perc_ffis_mean = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$Salud_perc_ffis, x$PESO)))
+#Hay que hacer el match por provincia
+prov_Salud_perc_ffis_mean_2 <- prov_Salud_perc_ffis_mean[match(index_prov, prov_Salud_perc_ffis_mean$PROV ), ]       
+esp2$Salud_perc_ffis=prov_Salud_perc_ffis_mean_2$wret
+
+#textos = prov_Salud_perc_ffis_mean_2$PROV
+textos = rep("",length(prov_Salud_perc_ffis_mean_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Salud_perc_ffis_mean = spplot(esp2, "Salud_perc_ffis", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a) Salud percep física media", cex = 1.5))
+
+prov_Salud_perc_ffis_median = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$Salud_perc_ffis, x$PESO)))
+#Hay que hacer el match por provincia
+prov_Salud_perc_ffis_median_2 <- prov_Salud_perc_ffis_median[match(index_prov, prov_Salud_perc_ffis_median$PROV ), ]       
+esp2$Salud_perc_ffis_med=prov_Salud_perc_ffis_median_2$wret
+
+#textos = prov_Salud_perc_ffis_mean_2$PROV
+textos = rep("",length(prov_Salud_perc_ffis_median_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Salud_perc_ffis_med = spplot(esp2, "Salud_perc_ffis_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b) Salud percep física mediana", cex = 1.5))
+
+grid.arrange(Salud_perc_ffis_mean,Salud_perc_ffis_med, nrow=1)
+```
+
+## Contenidos deportivos como entretenimiento
+
+```{r}
+cont_dep_entrete_mean =svymean(~cont_dep_entrete, df3, na.rm = TRUE)
+cont_dep_entrete_median =svyquantile(~cont_dep_entrete, df3, na = TRUE, c(.5))
+print(cont_dep_entrete_mean)
+print(cont_dep_entrete_median)
+
+plot1 <- ggplot(df2, aes(cont_dep_entrete, weight = PESO)) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), fill = "purple4") + 
+          scale_y_continuous(labels=scales::percent) +
+          geom_text(aes( label = scales::percent(..prop.., accuracy = 0.1),
+                   y= ..prop.. ), stat= "count", vjust = -.5) +
+       ylab("relative frequencies")+
+       xlab("(a) Proporción Contenidos deportivos como entretenimiento")
+
+plot2 <- ggplot(df2, aes(x = cont_dep_entrete, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "(b) Contenidos deportivos como entretenimiento")
+
+plot5 <- ggplot(df2, aes(x = cont_dep_entrete, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "(c) Contenidos deportivos según género")+ scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(df2, aes(x = cont_dep_entrete, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "(d) Contenidos deportivos según nivel  estudios")+ scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(df2, aes(x = cont_dep_entrete, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "(e) Contenidos deportivos según edad")+ scale_fill_brewer(palette="BuPu")
+
+plot1
+grid.arrange(plot2, plot5, plot3, plot4, nrow=2)
+```
+
+
+```{r}
+prov_cont_dep_entrete_mean = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$cont_dep_entrete, x$PESO)))
+#Hay que hacer el match por provincia
+prov_cont_dep_entrete_mean_2 <- prov_cont_dep_entrete_mean[match(index_prov, prov_cont_dep_entrete_mean$PROV ), ]       
+esp2$cont_dep_entrete=prov_cont_dep_entrete_mean_2$wret
+
+#textos = prov_cont_dep_entrete_mean_2$PROV
+textos = rep("",length(prov_cont_dep_entrete_mean_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+cont_dep_entrete_mean = spplot(esp2, "cont_dep_entrete", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a)Content dep entrete media", cex = 1.5))
+
+prov_cont_dep_entrete_median = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$cont_dep_entrete, x$PESO)))
+#Hay que hacer el match por provincia
+prov_cont_dep_entrete_median_2 <- prov_cont_dep_entrete_median[match(index_prov, prov_cont_dep_entrete_median$PROV ), ]       
+esp2$cont_dep_entrete_med=prov_cont_dep_entrete_median_2$wret
+
+#textos = prov_cont_dep_entrete_mean_2$PROV
+textos = rep("",length(prov_cont_dep_entrete_median_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+cont_dep_entrete_med =spplot(esp2, "cont_dep_entrete_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b)Content dep entrete mediana", cex = 1.5))
+
+grid.arrange(cont_dep_entrete_mean, cont_dep_entrete_med, nrow=1)
+```
+
+## Tiempo libre
+
+```{r}
+Tiempo_libre_mean =svymean(~Tiempo_libre, df3, na.rm = TRUE)
+Tiempo_libre_median =svyquantile(~Tiempo_libre, df3, na = TRUE, c(.5))
+print(Tiempo_libre_mean)
+print(Tiempo_libre_median)
+
+plot1 <- ggplot(df2, aes(Tiempo_libre, weight = PESO)) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), fill = "purple4") + 
+          scale_y_continuous(labels=scales::percent) +
+          geom_text(aes( label = scales::percent(..prop.., accuracy = 0.1),
+                   y= ..prop.. ), stat= "count", vjust = -.5) +
+       ylab("relative frequencies") +
+       xlab("(a) Proporción Tiempo Libre")
+
+plot2 <- ggplot(df2, aes(x = Tiempo_libre, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "(b) Tiempo libre")
+
+plot5 <- ggplot(df2, aes(x = Tiempo_libre, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "(c) Tiempo libre según género")+ scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(df2, aes(x = Tiempo_libre, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "(d) Tiempo libre según  nivel de estudios")+ scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(df2, aes(x = Tiempo_libre, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "(e) Tiempo libre según edad")+ scale_fill_brewer(palette="BuPu")
+
+plot1
+grid.arrange(plot2,plot5,plot3, plot4, nrow=2)
+```
+
+```{r}
+prov_Tiempo_libre_mean = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$Tiempo_libre, x$PESO)))
+#Hay que hacer el match por provincia
+prov_Tiempo_libre_mean_2 <- prov_Tiempo_libre_mean[match(index_prov, prov_Tiempo_libre_mean$PROV ), ]       
+esp2$Tiempo_libre=prov_Tiempo_libre_mean_2$wret
+
+#textos = prov_Tiempo_libre_mean_2$PROV
+textos = rep("",length(prov_Tiempo_libre_mean_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Tiempo_libre_mean = spplot(esp2, "Tiempo_libre", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a) Tiempo libre media", cex = 1.5))
+
+prov_Tiempo_libre_median = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$Tiempo_libre, x$PESO)))
+#Hay que hacer el match por provincia
+prov_Tiempo_libre_median_2 <- prov_Tiempo_libre_median[match(index_prov, prov_Tiempo_libre_median$PROV ), ]       
+esp2$Tiempo_libre_med=prov_Tiempo_libre_median_2$wret
+
+#textos = prov_Tiempo_libre_mean_2$PROV
+textos = rep("",length(prov_Tiempo_libre_median_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Tiempo_libre_med = spplot(esp2, "Tiempo_libre_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b) Tiempo libre mediana", cex = 1.5))
+
+grid.arrange(Tiempo_libre_mean,Tiempo_libre_med, nrow=1)
+```
+
+
+## Equipamiento deportivo
+
+```{r}
+Equip_deportivo_mean =svymean(~Equip_deportivo, df3, na.rm = TRUE)
+Equip_deportivo_median =svyquantile(~Equip_deportivo, df3, na = TRUE, c(.5))
+print(Equip_deportivo_mean)
+print(Equip_deportivo_median)
+
+plot1 <- ggplot(df2, aes(Equip_deportivo, weight = PESO)) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), fill = "purple4") + 
+          scale_y_continuous(labels=scales::percent) +
+          geom_text(aes( label = scales::percent(..prop.., accuracy = 0.1),
+                   y= ..prop.. ), stat= "count", vjust = -.5) +
+       ylab("relative frequencies")+
+        xlab("(a) Proporción Equipamiento deportivo")
+
+
+plot2 <- ggplot(df2, aes(x = Equip_deportivo, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "(b) Equipamiento deportivo")
+
+plot5 <- ggplot(df2, aes(x = Equip_deportivo, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "(c) Equipamiento deportivo según género")+ scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(df2, aes(x = Equip_deportivo, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "(d) Equipamiento deportivo según nivel estudios")+ scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(df2, aes(x = Equip_deportivo, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "(e) Equipamiento deportivo según EDAD")+ scale_fill_brewer(palette="BuPu")
+
+plot1
+grid.arrange(plot2,plot5,plot3, plot4, nrow=2)
+```
+
+```{r}
+prov_Equip_deportivo_mean = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$Equip_deportivo, x$PESO)))
+#Hay que hacer el match por provincia
+prov_Equip_deportivo_mean_2 <- prov_Equip_deportivo_mean[match(index_prov, prov_Equip_deportivo_mean$PROV ), ]       
+esp2$Equip_deportivo=prov_Equip_deportivo_mean_2$wret
+
+#textos = prov_Equip_deportivo_mean_2$PROV
+textos = rep("",length(prov_Equip_deportivo_mean_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Equip_deportivo_mean = spplot(esp2, "Equip_deportivo", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a) Equip deportivo media", cex = 1.5))
+
+prov_Equip_deportivo_median = ddply(df2, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$Equip_deportivo, x$PESO)))
+
+prov_Equip_deportivo_median_2 <- prov_Equip_deportivo_median[match(index_prov, prov_Equip_deportivo_median$PROV ), ]       
+esp2$Equip_deportivo_med=prov_Equip_deportivo_median_2$wret
+
+#textos = prov_Indicador_mean_2$PROV
+textos = rep("",length(prov_Equip_deportivo_median_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Equip_deportivo_med = spplot(esp2, "Equip_deportivo_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b) Equip deportivo mediana", cex = 1.5))
+
+grid.arrange(Equip_deportivo_mean,Equip_deportivo_med, nrow=1)
+```
+
+
+# Tratamiento para MCA
+
+```{r}
+dfx= df
+```
+
+
+```{r}
+ zz2 = lapply(dfx[c(3)], function(x) cut(x, 
+    breaks = c(-Inf, quantile(x, c(0.22, 0.515, 1))), 
+   labels = c("Bajo", "Medio", "Alto")))
+
+ zz4 = lapply(dfx[c(5)], function(x) cut(x, 
+    breaks = c(-Inf, quantile(x, c(0.47, 1))), 
+   labels = c("Bajo", "Alto")))
+ 
+  zz6 = lapply(dfx[c(8)], function(x) cut(x, 
+    breaks = c(-Inf, quantile(x, c(0.48, 1))), 
+   labels = c("Bajo", "Alto")))
+
+zz1 = lapply(dfx[c(4)], function(x) cut(x, 
+    breaks = c(-Inf, quantile(x, c(0.5, 1))), 
+   labels = c("Bajo", "Alto")))
+
+zz3 = lapply(dfx[c(6)], function(x) cut(x, 
+    breaks = c(-Inf, quantile(x, c(0.42, 1))), 
+   labels = c("Bajo", "Alto")))
+
+zz5 = lapply(dfx[c(7)], function(x) cut(x, 
+    breaks = c(-Inf, quantile(x, c(0.42, 1))), 
+   labels = c("Bajo", "Alto")))
+
+
+df$Vinc_dep=zz2$Vinc_dep
+df$Pract_dep=zz1$Pract_dep
+df$Salud_perc_ffis=zz4$Salud_perc_ffis
+df$cont_dep_entrete=zz3$cont_dep_entrete
+df$Tiempo_libre=zz5$Tiempo_libre
+df$Equip_deportivo=zz6$Equip_deportivo
+df$PESO= df2$PESO
+```
+
+```{r message= FALSE}
+library(FactoMineR)
+library(ade4)
+library(FactoClass)
+library(factoextra)
+library(missMDA)
+
+j = 2*5+3
+
+#j = (length(zz2)*3)
+k = 6
+ejes = j-k
+Intotal = (j/k) -1
+
+```
+
+
+```{r}
+df_clean = df[,3:8]
+for (i in 1:6) {
+  plot(df_clean[,i], main=colnames(df_clean)[i],
+       ylab = "Count", col="steelblue", las = 3)
+  }
+```
+
+
+# Coordenadas sobre 2 ejes 
+```{r}
+acm<-MCA(df[3:8],graph = FALSE, row.w = df$PESO) #row.w =
+fviz_mca_ind(acm,repel=T)+labs(title ="Hábitos deportivos")
+```
+
+# Biplot
+```{r}
+fviz_mca_biplot(acm,repel=TRUE, ggtheme = theme_minimal()) +labs(title ="Representación simultanea de observaciones e indicadores temáticos")
+```
+
+# Screeplot
+```{r}
+eig.val <- get_eigenvalue(acm)
+fviz_screeplot(acm, addlabels = TRUE, ylim = c(0, 45))
+```
+
+
+```{r}
+var <- get_mca_var(acm)
+var
+```
+
+## Correlación entre variables y ejes
+
+```{r}
+fviz_mca_var(acm, choice = "mca.cor", 
+            repel = TRUE, # Avoid text overlapping (slow)
+            ggtheme = theme_minimal())
+```
+
+
+# Modalidades mas asociadas
+```{r}
+fviz_mca_var(acm,axes=c(1,2),repel = T )+labs(title = "Mapa perceptual MCA")
+```
+
+# Categorías según aporte al eje 
+
+```{r}
+fviz_mca_var(acm, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # Avoid text overlapping
+             ggtheme = theme_minimal())
+```
+
+La calidad de la representación se denomina coseno al cuadrado (cos2), que mide el grado de asociación entre las categorías de variables y un eje particular.
+
+
+```{r}
+head(var$cos2, 18)
+```
+
+Si una categoría de variable está bien representada por dos dimensiones, la suma de los cos2 se cierra a uno. Para algunos de los elementos de la fila, se requieren más de 2 dimensiones para representar perfectamente los datos.
+
+
+```{r}
+library("corrplot")
+corrplot(var$cos2, is.corr=FALSE)
+```
+
+
+```{r}
+fviz_cos2(acm, choice = "var", axes = 1:2)
+```
+
+# Contibución de cada categoría por eje
+
+```{r}
+# Contributions of var to dimension 1
+fviz_contrib(acm, choice = "var", axes = 1, top = 15)
+# Contributions of var to dimension 2
+fviz_contrib(acm, choice = "var", axes = 2, top = 15)
+# Contributions of var to dimension 2
+fviz_contrib(acm, choice = "var", axes = 3, top = 15)
+# Contributions of var to dimension 2
+fviz_contrib(acm, choice = "var", axes = 4, top = 15)
+# Total contribution to dimension 1 and 2
+fviz_contrib(acm, choice = "var", axes = 1:2, top = 15)
+```
+
+Esta línea de referencia corresponde al valor esperado si la contribución fuera uniforme.
+
+```{r}
+fviz_mca_var(acm, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # avoid text overlapping (slow)
+             ggtheme = theme_minimal()
+             )
+```
+
+## Resultados para los individuos
+
+```{r}
+ind <- get_mca_ind(acm)
+ind
+```
+
+# Discriminación
+
+```{r}
+med_discrim=k*0.5*eig.val[,1]
+med_discrim
+
+
+#cos2dim1=sort(var$cos2[,1], decreasing = T)
+```
+
+```{r}
+Xtot = acm$call$Xtot
+Xsum = colSums(Xtot)
+# weight_x = acm$var$cos2
+weight_x = acm$var$coord
+tt = (Xsum * weight_x^2)
+
+Vinc_dep_disc = colSums(tt[grep("^Vinc",rownames(tt)),grep("^Dim",colnames(tt))])
+Pract_dep_disc = colSums(tt[grep("^Pract",rownames(tt)),grep("^Dim",colnames(tt))])
+Salud_perc_ffis_disc = colSums(tt[grep("^Salud",rownames(tt)),grep("^Dim",colnames(tt))])
+cont_dep_entrete_disc = colSums(tt[grep("^cont",rownames(tt)),grep("^Dim",colnames(tt))])
+Tiempo_libre_disc = colSums(tt[grep("^Tiempo",rownames(tt)),grep("^Dim",colnames(tt))])
+Equip_deportivo_disc = colSums(tt[grep("^Equip",rownames(tt)),grep("^Dim",colnames(tt))])
+
+
+disc = rbind.data.frame(Vinc_dep_disc, Pract_dep_disc,Salud_perc_ffis_disc, cont_dep_entrete_disc,Tiempo_libre_disc,Equip_deportivo_disc)
+disc = disc/sum(df$PESO)
+
+colnames(disc) = c("dim1","dim2","dim3","dim4","dim5")
+rownames(disc) = c("Vinc_dep_disc","Pract_dep_disc","Salud_perc_ffis_disc","cont_dep_entrete_disc","Tiempo_libre_disc","Equip_deportivo_disc")
+
+
+```
+
+```{r}
+(colSums(disc))/k
+eig.val[,1]
+```
+
+```{r}
+colSums(disc)
+med_discrim
+```
+
+```{r}
+disc
+```
+
+
+
+## Pesos normalizados
+
+```{r}
+eig_values = eig.val[1:5,1]
+#weight_x = rbind(weight_x,eig_values)
+
+Vinc_dep_pre_norm = (weight_x[grep("^Vinc",rownames(weight_x)),grep("^Dim",colnames(weight_x))])
+Pract_dep_pre_norm = (weight_x[grep("^Pract",rownames(weight_x)),grep("^Dim",colnames(weight_x))])
+Salud_perc_pre_norm = (weight_x[grep("^Salud",rownames(weight_x)),grep("^Dim",colnames(weight_x))])
+cont_dep_pre_norm = (weight_x[grep("^cont",rownames(weight_x)),grep("^Dim",colnames(weight_x))])
+Tiempo_libre_pre_norm = (weight_x[grep("^Tiempo",rownames(weight_x)),grep("^Dim",colnames(weight_x))])
+Equip_deportivo_pre_norm = (weight_x[grep("^Equip",rownames(tt)),grep("^Dim",colnames(weight_x))])
+
+library(collapse)
+
+Vinc_dep_min_norm = dapply(Vinc_dep_pre_norm, MARGIN = 2, FUN = min)
+Pract_dep_min_norm = dapply(Pract_dep_pre_norm, MARGIN = 2, FUN = min)
+Salud_perc_min_norm = dapply(Salud_perc_pre_norm, MARGIN = 2, FUN = min)
+cont_dep_min_norm = dapply(cont_dep_pre_norm, MARGIN = 2, FUN = min)
+Tiempo_libre_min_norm = dapply(Tiempo_libre_pre_norm, MARGIN = 2, FUN = min)
+Equip_deportivo_min_norm = dapply(Equip_deportivo_pre_norm, MARGIN = 2, FUN = min)
+
+Vinc_dep_rest_norm = dapply(Vinc_dep_pre_norm, MARGIN = 1, FUN = function(x) ((x-Vinc_dep_min_norm)))
+Pract_dep_rest_norm = dapply(Pract_dep_pre_norm, MARGIN = 1, FUN = function(x) ((x-Pract_dep_min_norm)))
+Salud_perc_rest_norm = dapply(Salud_perc_pre_norm, MARGIN = 1, FUN = function(x) ((x-Salud_perc_min_norm)))
+cont_dep_rest_norm = dapply(cont_dep_pre_norm, MARGIN = 1, FUN = function(x) ((x-cont_dep_min_norm)))
+Tiempo_libre_rest_norm = dapply(Tiempo_libre_pre_norm, MARGIN = 1, FUN = function(x) ((x-Tiempo_libre_min_norm)))
+Equip_deportivo_rest_norm = dapply(Equip_deportivo_pre_norm, MARGIN = 1, FUN = function(x) ((x-Equip_deportivo_min_norm)))
+
+normalizar = rbind(Vinc_dep_rest_norm,Pract_dep_rest_norm,Salud_perc_rest_norm,cont_dep_rest_norm,Tiempo_libre_rest_norm,Equip_deportivo_rest_norm,eig_values)
+
+library(collapse)
+#Vinc_dep_norm = dapply(Vinc_dep_pre_norm, MARGIN = 1, FUN = function(x) ((x-min(x))/(sqrt(weight_x[nrow(weight_x)])))*1000) 
+i=1
+options(scipen = 100)
+weight_norm = dapply(normalizar, MARGIN = 1, FUN = function(x) ((x/(sqrt(normalizar[nrow(normalizar),])))*1000))
+weight_norm = weight_norm[-nrow(weight_norm),]
+weight_norm
+```
+
+
+# Indicador global
+
+## Para una dimensión
+
+```{r}
+weight_dim1 = weight_norm[,1]
+weight_dim3 = weight_norm[,3]
+nn = as.matrix(Xtot) %*% as.vector(weight_dim1)
+mm = nn/k
+```
+
+### Más de una dimesión
+
+```{r}
+
+firstdim = c()
+secdim = c()
+
+Ind_global = function(Xtot,weight_dim1,weight_dim3,firstdim,thirddim){
+
+}
+weight_fin = weight_norm[,1]
+
+weight_fin[c(8,9,12,13)]= weight_dim3[c(8,9,12,13)]
+percent = (weight_fin/sum(weight_fin))*100
+
+tabla2.4 = cbind(weight_fin,percent)
+
+nn2 = as.matrix(Xtot) %*% as.vector(weight_fin)
+mm2 = nn/k
+
+```
+
+## Mapa y estadisticos
+
+```{r}
+dffinal = data.frame (A1 = datos$A1, Indicador = mm2, PROV = datos$PROV, PESO = datos$PESO, GENERO = datos$P65, EDAD = WW$P66, CONDICION = datos$CONDICION, OCUPA = datos$OCUPA, ESTUDIOS = datos$ESTUDIOS, ESTATUS = datos$ESTATUS)
+
+dff2 = dffinal
+
+dffinal$ESTUDIOS=as.factor(dffinal$ESTUDIOS)
+dffinal$ESTATUS=as.factor(dffinal$ESTATUS)
+dffinal$GENERO=as.factor(dffinal$GENERO)
+dffinal$EDAD=as.factor(dffinal$EDAD)
+dffinal$PROV=as.factor(dffinal$PROV)
+
+dff2 <- svydesign(id=~A1,strata=NULL,data=dffinal ,weights = dffinal$PESO)
+
+```
+
+
+
+```{r}
+
+Indicador_mean =svymean(~Indicador, dff2, na.rm = TRUE)
+Indicador_median =svyquantile(~Indicador, dff2, na = TRUE, c(.5))
+print(Indicador_mean)
+print(Indicador_median)
+weighted.median(dffinal$Indicador, dffinal$PESO)
+
+
+plot2 <- ggplot(dffinal, aes(x = Indicador, weight = PESO)) +
+geom_boxplot(fill = "violetred") + labs(x = "(a) Indicador")
+
+plot5 <- ggplot(dffinal, aes(x = Indicador, y = GENERO, weight = PESO, group = GENERO, fill=GENERO)) +
+geom_boxplot() + labs(x = "(b) Indicador según género")+ scale_fill_brewer(palette="BuPu")
+
+plot3 <- ggplot(dffinal, aes(x = Indicador, y = ESTUDIOS, weight = PESO, group = ESTUDIOS, fill=ESTUDIOS)) +
+geom_boxplot() + labs(x = "(c) Indicador según nivel estudios")+ scale_y_discrete(limits=c("Ninguno", "Primaria", "Secundaria","F.P","Universitarios","Superiores","N.C")) + scale_fill_brewer(palette="BuPu")
+
+plot4 <- ggplot(dffinal, aes(x = Indicador, y = EDAD, weight = PESO, group = EDAD, fill=EDAD)) +
+geom_boxplot() + labs(x = "(d) Indicador según EDAD")+ scale_fill_brewer(palette="BuPu")
+
+grid.arrange(plot2,plot5,plot3, plot4, nrow=2)
+```
+```{r}
+plot5 <- ggplot(dffinal, aes(x = Indicador, y = EDAD, weight = PESO, fill=GENERO)) +
+geom_boxplot() + labs(x = "(e) Indicador según género y edad")+ scale_fill_brewer(palette="BuPu")
+plot5
+```
+
+
+```{r}
+prov_Indicador_mean = ddply(dffinal, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.mean(x$Indicador, x$PESO)))
+
+#Hay que hacer el match por provincia
+prov_Indicador_mean_2 <- prov_Indicador_mean[match(index_prov, prov_Indicador_mean$PROV ), ]       
+esp2$Indicador=prov_Indicador_mean_2$wret
+
+#textos = prov_Indicador_mean_2$PROV
+textos = rep("",length(prov_Indicador_mean_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Indicador_mean = spplot(esp2, "Indicador", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(a) Media Hábitos deportivos", cex = 1.5))
+
+prov_Indicador_median = ddply(dffinal, .(PROV),   # so by asset class invoke following function
+       function(x) data.frame(wret=weighted.median(x$Indicador, x$PESO)))
+
+prov_Indicador_median_2 <- prov_Indicador_median[match(index_prov, prov_Indicador_median$PROV ), ]       
+esp2$Indicador_med=prov_Indicador_median_2$wret
+
+#textos = prov_Indicador_mean_2$PROV
+textos = rep("",length(prov_Indicador_mean_2$PROV))
+lista = list("sp.text", coordenadas2, textos)
+#lista = list("sp.text", coordenadas, textos)
+
+library(RColorBrewer)
+my.palette <- brewer.pal(n = 9, name = "Blues")
+
+Indicador_med = spplot(esp2, "Indicador_med", cuts = 8, col.regions = my.palette, sp.layout=lista, main = list(label="(b) Mediana Hábitos deportivos ", cex = 1.5))
+
+grid.arrange(Indicador_mean, Indicador_med, nrow=1)
+```
+
